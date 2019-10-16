@@ -4,7 +4,7 @@
 
     <group ns="$(arg ns1)">
         <arg name="calibration" default="$(find velodyne_pointcloud)/params/VeloView-VLP-32C.yaml"/>
-        <arg name="device_ip" default="192.168.1.198"/>
+        <arg name="device_ip" default="192.168.10.198"/>
         <arg name="frame_id" default="$(arg ns1)"/>
         <arg name="manager" default="$(arg frame_id)_nodelet_manager"/>
         <arg name="max_range" default="200.0"/>
