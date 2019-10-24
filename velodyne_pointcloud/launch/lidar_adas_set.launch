@@ -1,0 +1,16 @@
+<launch>
+<!-- adas_ws Velodyne drivers starting script -->
+
+<!-- Start VLP16_01 Driver -->
+<include file="$(find velodyne_pointcloud)/launch/vlp16_01.launch"/>
+
+<!-- Start VLP16_02 Driver -->
+<include file="$(find velodyne_pointcloud)/launch/vlp16_02.launch"/>
+
+<!-- Start VLP16_03 Driver -->
+<include file="$(find velodyne_pointcloud)/launch/vlp16_03.launch"/>
+
+<!-- Start VLP32_01 Driver -->
+<include file="$(find velodyne_pointcloud)/launch/vlp32_01.launch"/>
+
+</launch>
