@@ -4,18 +4,7 @@
   <!-- Broadcast Transforms -->
   <!--  static_transform_publisher x y z yaw pitch roll frame_id child_frame_id period_in_ms-->
 
-  <node name="broadcaster_vlp32_01_to_vlp16_01"
-        pkg="tf" type="static_transform_publisher"
-        args="2.343  0 -1.432 0.00 0.00 0.00 /vlp32_01 /vlp16_01 20"/>
-
-  <node name="broadcaster_vlp32_01_to_vlp16_02"
-        pkg="tf" type="static_transform_publisher"
-        args="0  0.447 -0.0885 0.00 0.00 -0.942478 /vlp32_01 /vlp16_02 20"/>
-
-  <node name="broadcaster_vlp32_01_to_vlp16_03"
-        pkg="tf" type="static_transform_publisher"
-        args="0  -0.447 -0.0885 0.00 0.00 0.942478 /vlp32_01 /vlp16_03 20"/>
-
+  <include file="$(find velodyne_pointcloud)/launch/transformations_lidars.launch"/>
 
   <!-- Start VLP16_01 Driver -->
   <include file="$(find velodyne_pointcloud)/launch/vlp16_01.launch"/>

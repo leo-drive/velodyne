@@ -1,0 +1,15 @@
+<launch>
+
+  <node pkg="tf" type="static_transform_publisher"
+        name="transformation_vlp32_01_to_vlp16_01"
+        args="2.343  0 -1.432 0.00 0.00 0.00 /vlp32_01 /vlp16_01 20"/>
+
+  <node pkg="tf" type="static_transform_publisher"
+        name="transformation_vlp32_01_to_vlp16_02"
+        args="0  0.447 -0.0885 0.00 0.00 -0.942478 /vlp32_01 /vlp16_02 20"/>
+
+  <node pkg="tf" type="static_transform_publisher"
+        name="transformation_vlp32_01_to_vlp16_03"
+        args="0  -0.447 -0.0885 0.00 0.00 0.942478 /vlp32_01 /vlp16_03 20"/>
+
+</launch>
