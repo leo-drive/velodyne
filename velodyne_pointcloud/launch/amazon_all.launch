@@ -1,0 +1,6 @@
+<launch>
+    <include file="$(find velodyne_pointcloud)/launch/vlp16_01.launch"/>
+    <include file="$(find velodyne_pointcloud)/launch/vlp16_02.launch"/>
+    <include file="$(find velodyne_pointcloud)/launch/vlp16_03.launch"/>
+    <include file="$(find velodyne_pointcloud)/launch/vlp16_04.launch"/>
+</launch>
