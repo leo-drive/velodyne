@@ -1,9 +1,9 @@
 !!python/object/new:dynamic_reconfigure.encoding.Config
 dictitems:
-  fixed_frame: vlp16_04
+  fixed_frame: vlp16_01
   groups: !!python/object/new:dynamic_reconfigure.encoding.Config
     dictitems:
-      fixed_frame: vlp16_04
+      fixed_frame: vlp16_01
       groups: !!python/object/new:dynamic_reconfigure.encoding.Config
         state: []
       id: 0
@@ -15,15 +15,15 @@ dictitems:
         state: []
       parent: 0
       state: true
-      target_frame: vlp16_04
+      target_frame: vlp16_01
       type: ''
       view_direction: 0.0
-      view_width: 4.398229715026
+      view_width: 4.2725660088824
     state: []
   max_range: 130.0
   min_range: 0.4
   organize_cloud: false
-  target_frame: vlp16_04
+  target_frame: vlp16_01
   view_direction: 0.0
-  view_width: 4.398229715026
+  view_width: 4.2725660088824
 state: []

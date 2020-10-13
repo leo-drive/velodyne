@@ -4,9 +4,15 @@
     <include file="$(find velodyne_pointcloud)/launch/vlp16_03.launch"/>
     <include file="$(find velodyne_pointcloud)/launch/vlp16_04.launch"/>
 
+    <node name="dynamic_reconfigure_load_01" pkg="dynamic_reconfigure" type="dynparam"
+          args="load /vlp16_01/vlp16_01_nodelet_manager_cloud /home/user/projects/asap_drivers_ws/src/velodyne/velodyne_pointcloud/params/vlp16_01_config.yaml" />
+
+    <node name="dynamic_reconfigure_load_02" pkg="dynamic_reconfigure" type="dynparam"
+          args="load /vlp16_02/vlp16_02_nodelet_manager_cloud /home/user/projects/asap_drivers_ws/src/velodyne/velodyne_pointcloud/params/vlp16_02_config.yaml" />
 
     <node name="dynamic_reconfigure_load_03" pkg="dynamic_reconfigure" type="dynparam"
           args="load /vlp16_03/vlp16_03_nodelet_manager_cloud /home/user/projects/asap_drivers_ws/src/velodyne/velodyne_pointcloud/params/vlp16_03_config.yaml" />
+
     <node name="dynamic_reconfigure_load_04" pkg="dynamic_reconfigure" type="dynparam"
           args="load /vlp16_04/vlp16_04_nodelet_manager_cloud /home/user/projects/asap_drivers_ws/src/velodyne/velodyne_pointcloud/params/vlp16_04_config.yaml" />
 
