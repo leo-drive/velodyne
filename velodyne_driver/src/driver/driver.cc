@@ -166,6 +166,12 @@ VelodyneDriver::VelodyneDriver(ros::NodeHandle node,
       node.advertise<velodyne_msgs::VelodyneScan>("velodyne_packets", 10);
 
   last_azimuth_ = -1;
+
+  double revs_per_sec = config_.rpm / 60.0f;
+  millis_revolution_ = static_cast<int>(std::round(1000.0 / revs_per_sec));
+  ROS_INFO_STREAM("millis_revolution = " << millis_revolution_);
+  millis_target_next_ = 0;
+  millis_initialized_ = false;
 }
 
 /** poll the device
@@ -216,15 +222,72 @@ bool VelodyneDriver::poll(void) {
   {
     // Since the velodyne delivers data at a very high rate, keep
     // reading and publishing scans as fast as possible.
-    scan->packets.resize(config_.npackets);
-    for (int i = 0; i < config_.npackets; ++i) {
+
+
+    auto get_time_millis = []() {
+      return static_cast<uint64_t>(std::floor(ros::Time::now().toSec() * 1000));
+    };
+
+    if (!millis_initialized_) {
+      uint64_t time_since_beginning = get_time_millis() / millis_revolution_ - 1;
+      millis_target_next_ = time_since_beginning * millis_revolution_;
+      millis_initialized_ = true;
+    }
+
+    while (millis_target_next_ < get_time_millis()) {
+      millis_target_next_ += millis_revolution_;
+      ROS_INFO_STREAM("hmm");
+    }
+
+    scan->packets.resize(config_.npackets * 1.2);
+
+    int index_packet = 0;
+    bool millis_switch_ = false;
+    while (!millis_switch_) {
+      if (get_time_millis() > millis_target_next_) {
+        millis_target_next_ += millis_revolution_;
+        millis_switch_ = true;
+      }
       while (true) {
         // keep reading until full packet received
-        int rc = input_->getPacket(&scan->packets[i], config_.time_offset);
+        int rc = input_->getPacket(&scan->packets[index_packet], config_.time_offset);
         if (rc == 0) break;       // got a full packet?
         if (rc < 0) return false; // end of file reached?
       }
+
+      index_packet++;
+      if (index_packet > scan->packets.size() - 1) {
+        ROS_WARN_STREAM("index_packet is too big");
+        break;
+      }
     }
+    scan->packets.resize(index_packet);
+
+//    ROS_WARN_STREAM("finished a scan with packet size of " << scan->packets.size());
+//    ROS_WARN_STREAM("expected package size " << config_.npackets);
+
+
+//    for (int i = 0; i < config_.npackets; ++i) {
+//      while (true) {
+//        // keep reading until full packet received
+//        int rc = input_->getPacket(&scan->packets[i], config_.time_offset);
+//        if (rc == 0) break;       // got a full packet?
+//        if (rc < 0) return false; // end of file reached?
+//      }
+//    }
+//    if (!millis_switch_){
+//
+//      while (true) {
+//        // keep reading until full packet received
+//        int rc = input_->getPacket(&scan->packets[index_packet], config_.time_offset);
+//        if (rc == 0) break;       // got a full packet?
+//        if (rc < 0) return false; // end of file reached?
+//      }
+//
+//    }
+
+
+
   }
 
   // publish message using time of last packet read
@@ -234,6 +297,11 @@ bool VelodyneDriver::poll(void) {
   } else {
     scan->header.stamp = scan->packets.back().stamp;
   }
+
+  uint64_t millis_target_start = millis_target_next_ - millis_revolution_;
+
+  scan->header.stamp.fromNSec(millis_target_start * 1000000);
+
   scan->header.frame_id = config_.frame_id;
   output_.publish(scan);
 
