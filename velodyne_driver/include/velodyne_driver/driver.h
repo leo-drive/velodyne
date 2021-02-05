@@ -42,43 +42,40 @@
 #include <velodyne_driver/input.h>
 #include <velodyne_driver/VelodyneNodeConfig.h>
 
-namespace velodyne_driver
-{
+namespace velodyne_driver {
 
-class VelodyneDriver
-{
-public:
+class VelodyneDriver {
+ public:
   VelodyneDriver(ros::NodeHandle node,
                  ros::NodeHandle private_nh,
-                 std::string const & node_name = ros::this_node::getName());
+                 std::string const &node_name = ros::this_node::getName());
   ~VelodyneDriver() {}
 
   bool poll(void);
 
-private:
+ private:
   // Callback for dynamic reconfigure
   void callback(velodyne_driver::VelodyneNodeConfig &config,
-              uint32_t level);
+                uint32_t level);
   // Callback for diagnostics update for lost communication with vlp
-  void diagTimerCallback(const ros::TimerEvent&event);
+  void diagTimerCallback(const ros::TimerEvent &event);
 
   // Pointer to dynamic reconfigure service srv_
   boost::shared_ptr<dynamic_reconfigure::Server<velodyne_driver::
-              VelodyneNodeConfig> > srv_;
+                                                VelodyneNodeConfig> > srv_;
 
   // configuration parameters
-  struct
-  {
+  struct {
     std::string frame_id;            // tf frame ID
     std::string model;               // device model name
-    int    npackets;                 // number of packets to collect
+    int npackets;                 // number of packets to collect
     double rpm;                      // device rotation rate (RPMs)
     int cut_angle;                   // cutting angle in 1/100°
     double time_offset;              // time in seconds added to each velodyne time stamp
     bool enabled;                    // polling is enabled
     bool timestamp_first_packet;
   }
-  config_;
+      config_;
 
   boost::shared_ptr<Input> input_;
   ros::Publisher output_;
